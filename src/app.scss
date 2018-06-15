@@ -1,0 +1,67 @@
+@import './_variable.scss';
+
+@font-face {
+    font-family: 'iconfont';  /* project id 708027 */
+    src: url('//at.alicdn.com/t/font_708027_ypa6oj546it.eot');
+    src: url('//at.alicdn.com/t/font_708027_ypa6oj546it.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_708027_ypa6oj546it.woff') format('woff'),
+    url('//at.alicdn.com/t/font_708027_ypa6oj546it.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_708027_ypa6oj546it.svg#iconfont') format('svg');
+}
+/* poppins-normal - latin */
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: regular;
+    src: url('//lib.baomitu.com/fonts/poppins/poppins-v2-latin-regular.eot'); /* IE9 Compat Modes */
+    src: local('Poppins'), local('Poppins-Normal'),
+         url('//lib.baomitu.com/fonts/poppins/poppins-v2-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('//lib.baomitu.com/fonts/poppins/poppins-v2-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('//lib.baomitu.com/fonts/poppins/poppins-v2-latin-regular.woff') format('woff'), /* Modern Browsers */
+         url('//lib.baomitu.com/fonts/poppins/poppins-v2-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('//lib.baomitu.com/fonts/poppins/poppins-v2-latin-regular.svg#Poppins') format('svg'); /* Legacy iOS */
+  }
+
+
+.iconfont {
+    font-family:"iconfont" !important;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+    margin-right: 15px;
+}
+.icon-eye:before{
+    content: "\e687";  // 观察两者之间的区别
+}
+text{
+    color: $text-default-color;
+    font-family: "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 1.4;
+}
+
+.unusual-box{
+    padding: 60px 0;
+    font-size: 26px;
+    letter-spacing: 1px;
+    text-align: center;
+    Image{
+        display: block;
+        width: 240px;
+        height: 227px;
+        margin: 0px auto 30px;
+    }
+    Text{
+        color: $text-sub-color;
+    }
+}
+
+.bottom-box{
+    padding-bottom: 30px;
+    font-size: 26px;
+    letter-spacing: 1px;
+    text-align: center;
+    Text{
+        color: $text-sub-color;
+    }    
+}

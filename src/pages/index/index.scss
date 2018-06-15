@@ -1,0 +1,83 @@
+@import '../../_variable.scss';
+page{
+    height: 100%;
+}
+.page-warpper{
+    background: $bg-color;
+    height: 100%;
+}
+.tabs-warpper{
+    position: fixed;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0px 1px 15px rgba(0, 0, 0, .1);
+    white-space: nowrap;
+    width: 100%;
+    z-index: 10;
+    .tabs-container{
+        .tab-item{
+            display: inline-block;
+            padding: 15PX 20PX;
+            font-size: 30px;
+            letter-spacing: 1px;
+            transition: all 0.25s ease-out;
+        }
+        .tab-active{
+            color: $main-color;
+            font-weight: bold;
+        }
+    }
+    .active-line{
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 0PX;
+        height: 8px;
+        border-radius: 100px;
+        background: linear-gradient(to right, lighten($main-color, 20%), $main-color);
+    }
+}
+
+.articles-warpper{
+    width: 100%;
+    padding-top: 100px;
+    overflow: hidden;
+    background: $bg-color;
+    .articles-container{
+        display: flex;
+        .articles-list{
+            flex: 1;
+            padding: 0 20PX;
+            box-sizing: border-box;
+        }        
+    }
+
+}
+
+.article-box{
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 4px;
+    margin: 30px 0;
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.05);
+    font-size: 24px;
+    .category{
+        display: block;
+        color: $main-color;
+        letter-spacing: 1px;
+        line-height: 1;
+        margin-bottom: 15px;
+    }
+    .title{
+        display: block;
+        font-size:32px;
+        margin-bottom: 15px;
+    }
+    .view-count{
+        color: $text-sub-color;
+        .iconfont{
+            color: $text-sub-color; 
+        }
+    }
+}
+

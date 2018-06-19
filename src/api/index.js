@@ -8,7 +8,7 @@ import { fetch } from './api'
  * @param {Int} per_page - 每页个数
  * @returns {Promise}
  */
-export function fetchPost(category = 0, page = 1, per_page = 6) {
+export function fetchPost(category = 0, page = 1, per_page = 5) {
     return fetch('post', {
         category,
         page,

@@ -28,7 +28,10 @@ export default class Index extends Component {
       winWidth: 0,
       isTouchEnd: false,
       transition: 'all 0.25s ease-out',
-      isBottom: false
+      isBottom: false,
+      winHeight: 0,
+      animationData: {},
+      lineAnimation: {}
     };
 
     this.setLinePosition = this.setLinePosition.bind(this);
@@ -39,7 +42,8 @@ export default class Index extends Component {
   componentWillMount () {
     Taro.getSystemInfo().then(res => {
       this.setState({
-        winWidth: res.windowWidth
+        winWidth: res.windowWidth,
+        winHeight: res.windowHeight
       })
     })
   }
@@ -63,7 +67,7 @@ export default class Index extends Component {
           idx: i,
           isLoading: false,
           data: [],
-          pagination: [],
+          pagination: {},
           isLast: false
         })
       }
@@ -74,8 +78,9 @@ export default class Index extends Component {
       this.setState({
         categoryItems,
         categoryCount,
-        postItems
+        postItems,
       })
+      
       setTimeout(() => {
         this.setLinePosition();
       }, 50)
@@ -97,11 +102,13 @@ export default class Index extends Component {
   /**
    * 上划触底事件
    */
-  onReachBottom () {
+  handleScrolltolower () {
     let {activeIndex, postItems, categoryItems} = this.state;
     let catId = categoryItems[activeIndex].id;
 
-    if (postItems[activeIndex].isLast) return false;
+    let isLast = postItems[activeIndex].pagination.total_pages == postItems[activeIndex].pagination.current_page
+
+    if (postItems[activeIndex].isLast || isLast) return false;
 
     let page = ++postItems[activeIndex].pagination.current_page;
     this.setState({
@@ -128,25 +135,40 @@ export default class Index extends Component {
     let query = Taro.createSelectorQuery();
     query.select(".tab-active").boundingClientRect().exec((res) =>{
       let {left, right} = res[0];
-      let lineLeft = left + 20;
-      let lineWidth = right - left - 40;
+      let lineLeft = left + 15;
+      let lineWidth = right - left - 30;
+
+      let animation = Taro.createAnimation({
+        duration: 250,
+        timingFunction: 'ease-out',
+      })
+      animation.left(lineLeft).width(lineWidth).step();
       this.setState({
-        lineLeft,
-        lineWidth
+        lineAnimation: animation.export(),
       })
     })
   }
 
   handleTabClick(id, index, e) {
-    let transLeft = -this.state.winWidth * index;
-    this.setState({
-      activeIndex: index,
-      transLeft
-    })
-    if (!this.state.postItems[index].data.length){
+    let {winWidth, postItems} = this.state;
+    let transLeft = -winWidth * index;
+
+    if (JSON.stringify(postItems[index].pagination) == '{}'){
       this.getPostData(index);
     }
-    
+  
+    let animation = Taro.createAnimation({
+      duration: 250,
+      timingFunction: 'ease-out',
+    })
+    animation.translate3d(transLeft, 0, 0).step();
+
+    this.setState({
+      activeIndex: index,
+      transLeft,
+      animationData: animation.export()
+    })
+
     setTimeout(() => {
       this.setLinePosition();
     }, 50)
@@ -158,9 +180,14 @@ export default class Index extends Component {
     let query = Taro.createSelectorQuery();
     query.select(".tab-active").boundingClientRect().exec((res) =>{
       let {left} = res[0];
-      let lineLeft = left + 20;
+      let lineLeft = left + 15;
+      let animation = Taro.createAnimation({
+        duration: 250,
+        timingFunction: 'ease-out',
+      })
+      animation.left(lineLeft).step();
       this.setState({
-        lineLeft
+        lineAnimation: animation.export(),
       })
     })  
   }
@@ -190,7 +217,7 @@ export default class Index extends Component {
    *  滑动开始事件
    */
   handleTouchStart(e) {
-    e.preventDefault();
+    //e.stopPropagation();
     const { pageX, pageY } = e.changedTouches[0];
     this.setState({
       startX: pageX,
@@ -207,6 +234,7 @@ export default class Index extends Component {
    *  滑动事件
    */
   handleTouchMove(e) {
+    //e.stopPropagation();
     const {isTouchEnd, startX, startY, winWidth, categoryCount, originLeft} = this.state;
     const { pageX, pageY } = e.changedTouches[0];
 
@@ -220,7 +248,13 @@ export default class Index extends Component {
       let transLeft = originLeft + deltaX;
       //如果translate>0 或 < maxWidth,则表示页面超出边界
       if (transLeft <= 0 && transLeft >= maxWidth){
+        let animation = Taro.createAnimation({
+          duration: 0,
+          timingFunction: 'ease-out',
+        })
+        animation.translate3d(transLeft, 0, 0).step();
         this.setState({
+          animationData: animation.export(),
           transLeft
         })
       }
@@ -232,14 +266,7 @@ export default class Index extends Component {
    *  滑动结束事件 
    */
   handleTouchEnd(e) {
-    this.calcIndex(e);
-
-  }
-
-  /**
-   *  滑动终止事件 
-   */
-  handleTouchCancel(e) {
+   // e.stopPropagation();
     this.calcIndex(e);
   }
 
@@ -258,40 +285,45 @@ export default class Index extends Component {
     let activeIndex = 0;
     let maxWidth = -winWidth * (categoryCount - 1);
 
-    if (!isTouchEnd && deltaT > 100) { 
+    if (!isTouchEnd) { 
 
-      if (Math.abs(deltaX) / winWidth < 0.5) {
-        transLeft = originLeft;
-        activeIndex = Math.abs(transLeft / winWidth);
-      }else{
+      if (deltaT < 300 || Math.abs(deltaX) / winWidth >= 0.5) {
         transLeft = deltaX < 0 ? originLeft - winWidth : originLeft + winWidth;
         transLeft = transLeft > 0 ? 0 : transLeft; //左边界
         transLeft = transLeft < maxWidth ? maxWidth : transLeft; //右边界
 
-        activeIndex = Math.abs(transLeft / winWidth);
-    
-        if (!postItems[activeIndex].data.length){
+        activeIndex = Math.abs(transLeft / winWidth);    
+        if (JSON.stringify(postItems[activeIndex].pagination) == '{}'){
           this.getPostData(activeIndex);
         }
         setTimeout(() => {
           this.setLinePosition();
-        }, 50)
+        }, 50)    
       }
 
-      this.setState({
-        activeIndex,
-        transLeft,
-        transition: 'all 0.25s ease-out',
-        isTouchEnd: true
-      })
+      if (deltaT > 300 && Math.abs(deltaX) / winWidth < 0.5) {
+        transLeft = originLeft;
+        activeIndex = Math.abs(transLeft / winWidth);
+      }
     }
+    let animation = Taro.createAnimation({
+      duration: 250,
+      timingFunction: 'ease-out',
+    })
+    animation.translate3d(transLeft, 0, 0).step();
 
+    this.setState({
+      activeIndex,
+      transLeft,
+      animationData: animation.export(),
+      isTouchEnd: true
+    })
   }
- 
+
 
   render () {
     return (
-      <View class="page-warpper">
+      <View>
         <View className='tabs-warpper'>
           <ScrollView className='tabs-container' scrollX onScroll={this.handleScroll}>
             {this.state.categoryItems.length > 0 && this.state.categoryItems.map((category, index) =>
@@ -302,7 +334,7 @@ export default class Index extends Component {
               </Text>
             )}
           </ScrollView>
-          <View className='active-line' style={ `left: ${this.state.lineLeft}px; width: ${this.state.lineWidth}px` }></View>
+          <View className='active-line' animation={this.state.lineAnimation}></View>
         </View>
 
         <View className='articles-warpper'
@@ -310,16 +342,17 @@ export default class Index extends Component {
           onTouchstart={this.handleTouchStart}
           onTouchmove={this.handleTouchMove}
           onTouchend={this.handleTouchEnd}
-          onTouchCancel={this.handleTouchCancel}>
+          onTouchCancel={this.handleTouchEnd}>
           <View className='articles-container' 
-            style={ `width: ${this.state.categoryCount}00%; transform: translate3d(${this.state.transLeft}px,0,0);transition:${this.state.transition}` }>
+            style={ `width: ${this.state.categoryCount}00%;`} animation={this.state.animationData}>
               {this.state.postItems.length > 0 && this.state.postItems.map((posts) =>
-                <View className='articles-list' key={posts.idx}>
+                <ScrollView className='articles-list' key={posts.idx} scrollY	style={`height: ${this.state.winHeight}px`} onScrolltolower={this.handleScrolltolower}>
                   {!posts.isLoading && (posts.data.length > 0 ? 
                     posts.data.map((post) =>
                       <View className='article-box' key={post.id}>
                         <Text className='category'>/ { post.category.name } /</Text>
                         <Text className='title'>{ post.title }</Text>
+                        <Text className='description'>{ post.description }</Text>
                         <View className='view-count'>
                             <Text className='iconfont icon-eye'></Text>{ post.view_count }
                         </View>
@@ -340,7 +373,7 @@ export default class Index extends Component {
                       <Text>已经到底啦~~</Text>
                     </View>
                   }
-                </View> 
+                </ScrollView> 
               )}          
           </View>
           {this.state.isBottom &&

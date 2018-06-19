@@ -1,11 +1,9 @@
 @import '../../_variable.scss';
 page{
-    height: 100%;
-}
-.page-warpper{
+    width: 100%;
     background: $bg-color;
-    height: 100%;
 }
+
 .tabs-warpper{
     position: fixed;
     overflow: hidden;
@@ -17,7 +15,7 @@ page{
     .tabs-container{
         .tab-item{
             display: inline-block;
-            padding: 15PX 20PX;
+            padding: 15PX;
             font-size: 30px;
             letter-spacing: 1px;
             transition: all 0.25s ease-out;
@@ -40,14 +38,14 @@ page{
 
 .articles-warpper{
     width: 100%;
-    padding-top: 100px;
-    overflow: hidden;
     background: $bg-color;
+    overflow: hidden;
     .articles-container{
         display: flex;
         .articles-list{
             flex: 1;
-            padding: 0 20PX;
+            width: 100%;
+            padding-top: 110px;
             box-sizing: border-box;
         }        
     }
@@ -57,9 +55,9 @@ page{
 .article-box{
     padding: 30px;
     background: #ffffff;
-    border-radius: 4px;
-    margin: 30px 0;
-    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    margin: 10PX 15PX;
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
     font-size: 24px;
     .category{
         display: block;
@@ -73,11 +71,10 @@ page{
         font-size:32px;
         margin-bottom: 15px;
     }
-    .view-count{
-        color: $text-sub-color;
-        .iconfont{
-            color: $text-sub-color; 
-        }
+    .description{
+        display: block;
+        color: $text-sub-color; 
+        margin-bottom: 15px;
     }
 }
 

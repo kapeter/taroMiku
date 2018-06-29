@@ -1,0 +1,17 @@
+@import '../../_variable.scss';
+
+.back-home{
+    position: fixed;
+    bottom: 45px;
+    left: 50%;
+    margin-left: -40px;
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    line-height: 80px;
+    background: $main-color;
+    border-radius: 100%;
+    .iconfont{
+        color: #fff;
+    }
+}

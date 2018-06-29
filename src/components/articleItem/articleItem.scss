@@ -3,12 +3,12 @@
 .article-box{
     padding: 30px;
     background: #ffffff;
-    border-radius: 4px;
-    margin: 30px 0;
-    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    margin: 10PX 15PX;
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
+    font-size: 24px;
     .category{
         display: block;
-        font-size: 24px;
         color: $main-color;
         letter-spacing: 1px;
         line-height: 1;
@@ -19,11 +19,9 @@
         font-size:32px;
         margin-bottom: 15px;
     }
-    .view-count{
-        font-size: 24px;
-        color: $text-sub-color;
-        .iconfont{
-            color: $text-sub-color; 
-        }
+    .description{
+        display: block;
+        color: $text-sub-color; 
+        margin-bottom: 15px;
     }
 }

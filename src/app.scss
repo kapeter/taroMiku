@@ -2,12 +2,12 @@
 
 @font-face {
     font-family: 'iconfont';  /* project id 708027 */
-    src: url('//at.alicdn.com/t/font_708027_ypa6oj546it.eot');
-    src: url('//at.alicdn.com/t/font_708027_ypa6oj546it.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_708027_ypa6oj546it.woff') format('woff'),
-    url('//at.alicdn.com/t/font_708027_ypa6oj546it.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_708027_ypa6oj546it.svg#iconfont') format('svg');
-}
+    src: url('//at.alicdn.com/t/font_708027_kxy5lwbuz3p.eot');
+    src: url('//at.alicdn.com/t/font_708027_kxy5lwbuz3p.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_708027_kxy5lwbuz3p.woff') format('woff'),
+    url('//at.alicdn.com/t/font_708027_kxy5lwbuz3p.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_708027_kxy5lwbuz3p.svg#iconfont') format('svg');
+  }
 /* poppins-normal - latin */
 @font-face {
     font-family: 'Poppins';
@@ -29,10 +29,13 @@
     -webkit-font-smoothing: antialiased;
     -webkit-text-stroke-width: 0.2px;
     -moz-osx-font-smoothing: grayscale;
-    margin-right: 15px;
 }
 .icon-eye:before{
     content: "\e687";  // 观察两者之间的区别
+    margin-right: 15px;
+}
+.icon-home:before{
+    content: "\e611";  // 观察两者之间的区别
 }
 text{
     color: $text-default-color;
@@ -53,6 +56,10 @@ text{
     Text{
         color: $text-sub-color;
     }
+    .loading{
+        width: 54px;
+        height: 56px;
+    }
 }
 
 .bottom-box{
@@ -62,4 +69,17 @@ text{
     Text{
         color: $text-sub-color;
     }    
+}
+
+.pull-left{
+    float: left;
+}
+.pull-right{
+    float: right;
+}
+.clearfix::after{
+    content: '';
+    display: block;
+    height: 0;
+    clear: both;
 }

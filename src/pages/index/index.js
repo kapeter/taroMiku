@@ -4,10 +4,13 @@ import { fetchPost, fetchCategory } from '../../api/index'
 // import ArticleItem from '../../components/articleItem/articleItem'
 import './index.scss'
 import errorImg from '../../images/error.png'
+import loadingImg from '../../images/bars.svg'
+
+let timer = null;
 
 export default class Index extends Component {
   config = {
-    navigationBarTitleText: '首页',
+    navigationBarTitleText: '文章列表',
     enablePullDownRefresh: false
   }
 
@@ -26,10 +29,9 @@ export default class Index extends Component {
       startY: 0,
       startT: 0,
       winWidth: 0,
-      isTouchEnd: false,
-      transition: 'all 0.25s ease-out',
-      isBottom: false,
       winHeight: 0,
+      isTouchEnd: false,
+      isBottom: false,
       animationData: {},
       lineAnimation: {}
     };
@@ -99,6 +101,13 @@ export default class Index extends Component {
     this.getPostData(index);
     Taro.stopPullDownRefresh();
   }
+
+  onShareAppMessage () {
+    return {
+        title: 'Kapeter, a front-end engineer.',
+        path: '/pages/index/index'
+    }
+  }
   /**
    * 上划触底事件
    */
@@ -132,6 +141,7 @@ export default class Index extends Component {
   }
 
   setLinePosition() {
+    const {winWidth} = this.state;
     let query = Taro.createSelectorQuery();
     query.select(".tab-active").boundingClientRect().exec((res) =>{
       let {left, right} = res[0];
@@ -176,20 +186,24 @@ export default class Index extends Component {
   /**
    * Tab滚动事件
    */
-  handleScroll() {
-    let query = Taro.createSelectorQuery();
-    query.select(".tab-active").boundingClientRect().exec((res) =>{
-      let {left} = res[0];
-      let lineLeft = left + 15;
+  handleScroll(e) {
+    // debunce
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      let query = Taro.createSelectorQuery();
       let animation = Taro.createAnimation({
-        duration: 250,
+        duration: 100,
         timingFunction: 'ease-out',
       })
-      animation.left(lineLeft).step();
-      this.setState({
-        lineAnimation: animation.export(),
-      })
-    })  
+      query.select(".tab-active").boundingClientRect().exec((res) =>{
+        let {left} = res[0];
+        let lineLeft = left + 15;
+        animation.left(lineLeft).step();
+        this.setState({
+          lineAnimation: animation.export(),
+        })
+      })  
+    },100);
   }
   /**
    * 获取当前栏目文章
@@ -217,7 +231,6 @@ export default class Index extends Component {
    *  滑动开始事件
    */
   handleTouchStart(e) {
-    //e.stopPropagation();
     const { pageX, pageY } = e.changedTouches[0];
     this.setState({
       startX: pageX,
@@ -234,7 +247,6 @@ export default class Index extends Component {
    *  滑动事件
    */
   handleTouchMove(e) {
-    //e.stopPropagation();
     const {isTouchEnd, startX, startY, winWidth, categoryCount, originLeft} = this.state;
     const { pageX, pageY } = e.changedTouches[0];
 
@@ -266,7 +278,6 @@ export default class Index extends Component {
    *  滑动结束事件 
    */
   handleTouchEnd(e) {
-   // e.stopPropagation();
     this.calcIndex(e);
   }
 
@@ -276,36 +287,35 @@ export default class Index extends Component {
    * @param {Object} e - 滑动事件的event 
    */
   calcIndex (e) {
-    const {startT, startX, isTouchEnd, winWidth, originLeft, postItems, categoryCount} = this.state
+    const {startT, startX, startY, isTouchEnd, winWidth, originLeft, postItems, categoryCount} = this.state
     const { pageX, pageY } = e.changedTouches[0];
 
     let deltaX = pageX - startX;
+    let deltaY = pageY - startY;
     let deltaT = new Date().getTime() - startT;
     let transLeft = 0;
     let activeIndex = 0;
     let maxWidth = -winWidth * (categoryCount - 1);
 
-    if (!isTouchEnd) { 
-
-      if (deltaT < 300 || Math.abs(deltaX) / winWidth >= 0.5) {
+    if (deltaT < 300 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      transLeft = deltaX < 0 ? originLeft - winWidth : originLeft + winWidth;
+      transLeft = transLeft > 0 ? 0 : transLeft; //左边界
+      transLeft = transLeft < maxWidth ? maxWidth : transLeft; //右边界
+    }else{
+      if (Math.abs(deltaX) / winWidth > 0.5) {
         transLeft = deltaX < 0 ? originLeft - winWidth : originLeft + winWidth;
         transLeft = transLeft > 0 ? 0 : transLeft; //左边界
-        transLeft = transLeft < maxWidth ? maxWidth : transLeft; //右边界
-
-        activeIndex = Math.abs(transLeft / winWidth);    
-        if (JSON.stringify(postItems[activeIndex].pagination) == '{}'){
-          this.getPostData(activeIndex);
-        }
-        setTimeout(() => {
-          this.setLinePosition();
-        }, 50)    
-      }
-
-      if (deltaT > 300 && Math.abs(deltaX) / winWidth < 0.5) {
+        transLeft = transLeft < maxWidth ? maxWidth : transLeft; //右边界       
+      }else{
         transLeft = originLeft;
-        activeIndex = Math.abs(transLeft / winWidth);
       }
     }
+
+    activeIndex = Math.abs(transLeft / winWidth);    
+    if (JSON.stringify(postItems[activeIndex].pagination) == '{}'){
+      this.getPostData(activeIndex);
+    }
+    
     let animation = Taro.createAnimation({
       duration: 250,
       timingFunction: 'ease-out',
@@ -317,6 +327,22 @@ export default class Index extends Component {
       transLeft,
       animationData: animation.export(),
       isTouchEnd: true
+    })
+
+    setTimeout(() => {
+      this.setLinePosition();
+    }, 50)  
+  }
+  /**
+   * 跳转到文章内容页
+   * 
+   * @param {Int} id - 文章id 
+   * @param {Object} e - 事件对象
+   */
+  turnToContent (id, e) {
+    e.stopPropagation();
+    Taro.navigateTo({
+      url: `/pages/post/post?id=${id}`
     })
   }
 
@@ -346,10 +372,10 @@ export default class Index extends Component {
           <View className='articles-container' 
             style={ `width: ${this.state.categoryCount}00%;`} animation={this.state.animationData}>
               {this.state.postItems.length > 0 && this.state.postItems.map((posts) =>
-                <ScrollView className='articles-list' key={posts.idx} scrollY	style={`height: ${this.state.winHeight}px`} onScrolltolower={this.handleScrolltolower}>
+                <ScrollView className='articles-list' style={ `height: ${this.state.winHeight}px` } key={posts.idx} scrollY onScrolltolower={this.handleScrolltolower}>
                   {!posts.isLoading && (posts.data.length > 0 ? 
                     posts.data.map((post) =>
-                      <View className='article-box' key={post.id}>
+                      <View className='article-box' key={post.id} onClick={this.turnToContent.bind(this, post.id)}>
                         <Text className='category'>/ { post.category.name } /</Text>
                         <Text className='title'>{ post.title }</Text>
                         <Text className='description'>{ post.description }</Text>
@@ -365,7 +391,8 @@ export default class Index extends Component {
                   )}  
                   { posts.isLoading && 
                     <View className='unusual-box'>
-                      <Text>数据加载中……</Text>
+                      <Image src={loadingImg} className='loading'></Image>
+                      <Text>数据加载中</Text>
                     </View>
                   }
                   { posts.isLast &&

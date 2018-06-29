@@ -44,6 +44,12 @@
 					"name": "moveable",
 					"pathName": "pages/index/index",
 					"query": ""
+				},
+				{
+					"id": 1,
+					"name": "文章内容",
+					"pathName": "pages/post/post",
+					"query": "id=64"
 				}
 			]
 		}

@@ -1,0 +1,23 @@
+@import '../../_variable.scss';
+
+.post-warpper{
+    color: $text-default-color;
+    .post-header{
+        padding: 20PX;
+        text-align: center;
+        .post-title{
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+        .post-info{
+            font-size: 28px;
+            color: $text-sub-color;
+            letter-spacing: .25em;
+        }
+
+    }
+    .post-body{
+        padding: 0PX 20PX 20PX;
+    }
+
+}

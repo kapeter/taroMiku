@@ -10,7 +10,7 @@ let timer = null;
 
 export default class Index extends Component {
   config = {
-    navigationBarTitleText: '文章列表',
+    navigationBarTitleText: '博文 / Kapeter',
     enablePullDownRefresh: false
   }
 

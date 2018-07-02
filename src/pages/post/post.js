@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, RichText } from '@tarojs/components'
 import { fetchContent } from '../../api/post'
 import './post.scss'
-import TaroMark from '../../components/taroMark/taroMark'
+import TaroWemark from '../../components/taro-wemark/taro-wemark'
 import BackToIndex from '../../components/backToIndex/backToIndex'
 
 export default class Index extends Component{
@@ -79,10 +79,9 @@ export default class Index extends Component{
                 </View>
                 <View className='post-body'>
                     { 
-                        this.state.content && <TaroMark md={this.state.content}></TaroMark> 
+                        this.state.content && <TaroWemark md={this.state.content}></TaroWemark> 
                     }    
-                </View>
-                
+                </View> 
             </View>
         )
     }

@@ -1,13 +1,13 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Video } from '@tarojs/components'
-import "./taroMark.scss"
+import "./taro-wemark.css"
 import Remarkable from "./remarkable"
 
 var parser = new Remarkable({
 	html: true
 });
 
-export default class TaroMark extends Component {
+export default class TaroWemark extends Component {
     constructor(props) {
         super(props);
 
@@ -132,6 +132,11 @@ export default class TaroMark extends Component {
                 return {
                     type: prefix + 'p',
                     content: content
+                };
+            }else if(blockToken.type === 'fence'){
+                return {
+                    type: 'code',
+                    content: blockToken.content
                 };
             }else if(blockToken.type === 'code'){
                 return {

@@ -261,7 +261,7 @@
     react "16.3.0"
     weui "^1.1.2"
 
-"@tarojs/plugin-babel@0.0.60":
+"@tarojs/plugin-babel@^0.0.60":
   version "0.0.60"
   resolved "https://registry.yarnpkg.com/@tarojs/plugin-babel/-/plugin-babel-0.0.60.tgz#7f02009544a9103c431be3d70a6a1a76694fd464"
   dependencies:
@@ -299,7 +299,7 @@
     jsonp-retry "^1.0.3"
     whatwg-fetch "^2.0.4"
 
-"@tarojs/taro-weapp@0.0.60":
+"@tarojs/taro-weapp@^0.0.60":
   version "0.0.60"
   resolved "https://registry.yarnpkg.com/@tarojs/taro-weapp/-/taro-weapp-0.0.60.tgz#26508387e41a06ebb21c19863873b0b7fb3b1967"
   dependencies:
@@ -4461,10 +4461,6 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-marked@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-0.4.0.tgz#9ad2c2a7a1791f10a852e0112f77b571dce10c66"
-
 math-expression-evaluator@^1.2.14:
   version "1.2.17"
   resolved "https://registry.yarnpkg.com/math-expression-evaluator/-/math-expression-evaluator-1.2.17.tgz#de819fdbcd84dccd8fae59c6aeb79615b9d266ac"
@@ -6912,6 +6908,10 @@ tar@^4:
     mkdirp "^0.5.0"
     safe-buffer "^5.1.2"
     yallist "^3.0.2"
+
+taro-wemark@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/taro-wemark/-/taro-wemark-1.0.0.tgz#4d78584c946094b55edbb34178680206947c86e5"
 
 text-table@~0.2.0:
   version "0.2.0"

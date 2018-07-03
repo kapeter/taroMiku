@@ -83,3 +83,18 @@ text{
     height: 0;
     clear: both;
 }
+
+.btn{
+    border-radius: 100px;
+    border: 0;
+    outline: 0;
+    color: #fff;
+    font-size: 36px;
+    background: linear-gradient(to left, lighten($main-color, 10%), $main-color);
+}
+.btn::after{
+    border: 0;
+}
+.btn:hover, .btn:active, .btn:focus{
+    background: $main-color;
+}

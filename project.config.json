@@ -50,6 +50,12 @@
 					"name": "文章内容",
 					"pathName": "pages/post/post",
 					"query": "id=64"
+				},
+				{
+					"id": -1,
+					"name": "contact",
+					"pathName": "pages/contact/contact",
+					"query": ""
 				}
 			]
 		}

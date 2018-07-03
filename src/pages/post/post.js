@@ -5,7 +5,7 @@ import './post.scss'
 import TaroWemark from '../../components/taro-wemark/taro-wemark'
 import BackToIndex from '../../components/backToIndex/backToIndex'
 
-export default class Index extends Component{
+export default class Post extends Component{
     config = {
         navigationBarTitleText: '文章加载中……',
         enablePullDownRefresh: false

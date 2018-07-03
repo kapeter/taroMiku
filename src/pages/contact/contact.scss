@@ -1,0 +1,54 @@
+@import '../../_variable.scss';
+
+.contact{
+    position: relative;
+    padding: 20PX;
+    background: #ffffff;
+    .contact-header{
+        text-align: center;
+        margin-bottom: 60px;
+        .avatar{
+            display: inline-block;
+            width: 128px;
+            height: 128px;
+            margin-bottom: 30px;
+        }
+        .nickname{
+            color: $text-sub-color;
+            font-size: 28px;
+        }
+    }
+    .error{
+        color: $text-error-color;
+        margin-top: 30px;
+        font-size: 32px;
+    }
+    Input{
+        padding-bottom: 15px;
+        border-bottom: 1px solid $border-default-color;
+        font-size: 32px;
+        margin-bottom: 30px;
+        color: $text-default-color;
+    }
+    Textarea{
+        width: 100%;
+        padding: 15px 0;
+        border-bottom: 1px solid $border-default-color;
+        font-size: 32px;
+        margin-bottom: 30px;
+    }
+    .fixed-bottom{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 20PX;
+        box-sizing: border-box;
+    }
+    .cancel{
+        text-align: center;
+        font-size: 32px;
+        color: $text-sub-color;
+        margin-top: 30px;
+    }
+}

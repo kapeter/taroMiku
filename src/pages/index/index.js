@@ -104,7 +104,7 @@ export default class Index extends Component {
 
   onShareAppMessage () {
     return {
-        title: 'Kapeter, a front-end engineer.',
+        title: '博文 / Kapeter',
         path: '/pages/index/index'
     }
   }
